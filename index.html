@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vox</title>
+</head>
+
+<body>
+<style>
+  * {
+    background: #654da1;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #canvas {
+    image-rendering: pixelated;
+    position: absolute;
+  }
+  
+  @media (orientation: portrait) {
+    #canvas {
+      width: 100vw;
+      height: 100vw;
+      top: calc(50vh - 50vw);
+    }
+  }
+  @media (orientation: landscape) {
+    #canvas {
+      width: 100vh;
+      height: 100vh;
+      left: calc(50vw - 50vh);
+    }
+  }
+</style>
+<canvas id="canvas"></canvas>
+<img src="sprites/clown.png" class="sprite" hidden>
+<script src="vox.js"></script>
+<script src="camera.js"></script>
+
+<script>
+
+  
+  scaleSize = 32;
+  resolution = 8;
+  res = scaleSize/resolution;
+  image = document.querySelector('.sprite');
+  width = image.width;
+  height = image.height;
+  layers = height/width;
+  size = layers*scaleSize;
+  canvas.width = size;
+  canvas.height = size;
+  layers2 = layers*scaleSize/res;
+  is = scaleSize/(scaleSize/res*2)
+  x = size/2-size/4
+  y = x;
+  scale = size/2;
+  
+  t = 0;
+  
+  function update() {
+    Yaw = Yaw + YawV;
+    Pitch = Math.min(Math.max(Pitch + PitchV,-90),0);
+    YawV = YawV * .9;
+    PitchV = PitchV * .9;
+    t = t+1;
+    cls()
+    z = 0;
+    for (i = layers2; i > 0; i--) {
+      if (i%(scaleSize/res)==0) { 
+        z++;
+      }
+      rotx = Pitch;
+      roty = Yaw;
+      ssprr(x,y+(i*is-layers2*is/2)*Math.cos(rotx*Math.PI/180),scale,scale,0,z*-width+height,width,width,roty,rotx);
+    }
+    requestAnimationFrame(update);
+  }
+
+  update();
+</script>
+
+</body>
+
+</html>
