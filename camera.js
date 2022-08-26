@@ -2,22 +2,18 @@
 let [Yaw,Pitch,XAcc,YAcc] = [-155,-25,.05,-.02];
 let [YawV,PitchV,XOld,YOld] = [0,0,0,0];
 let start = true;
+let start2 = false;
 
 const el = document.body;
 el.addEventListener('touchstart', touchStart);
 el.addEventListener('touchmove',touchMove);
 el.addEventListener('mousedown', mouseStart);
-el.addEventListener('mousemove',mouseMove);
+el.addEventListener('mousemove', mouseMove);
+el.addEventListener('mouseup', mouseEnd);
 
 function touchStart() {
   var XOld = event.touches[0].clientX;
   var YOld = event.touches[0].clientY;
-  start = true;
-}
-
-function mouseStart() {
-  var XOld = event.e.clientX;
-  var YOld = event.e.clientY;
   start = true;
 }
 
@@ -31,13 +27,23 @@ function touchMove() {
   }
 }
 
+function mouseStart() {
+  var XOld = event.clientX;
+  var YOld = event.clientY;
+  start2 = true;
+}
 
 function mouseMove() {
-  YawV = ((event.clientX - XOld) * XAcc) + YawV/4;
-  PitchV = ((event.clientY - YOld) * YAcc) + PitchV/4;
-  if (start == true) {
+  if (start2 == true) {
+    YawV = ((event.clientX - XOld) * XAcc) + YawV/4;
+    PitchV = ((event.clientY - YOld) * YAcc) + PitchV/4;
+  }
+  if (start2 == false) {
     XOld = event.clientX;
     YOld = event.clientY;
-    start = false;
   }
+}
+
+function mouseEnd() {
+  start2 = false;
 }
