@@ -6,6 +6,8 @@ let start = true;
 const el = document.body;
 el.addEventListener('touchstart', touchStart);
 el.addEventListener('touchmove',touchMove);
+el.addEventListener('mousedown', touchStart);
+el.addEventListener('mousemove',touchMove);
 
 function touchStart() {
   var XOld = event.touches[0].clientX;
