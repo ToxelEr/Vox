@@ -83,13 +83,25 @@
   t = 0;
   
   function update() {
+    
     Yaw = Yaw + YawV;
-    Pitch = Math.min(Math.max(Pitch + PitchV,-90),0);
+    Pitch = Math.min(Math.max(Pitch + PitchV,-90),90);
     YawV = YawV * .9;
     PitchV = PitchV * .9;
+    
+    if (Pitch < 0) {
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    else {
+      ctx.globalCompositeOperation = 'destination-over';
+    }
+
     t = t+1;
+    
     cls()
+    
     z = 0;
+    
     for (i = layers2; i > 0; i--) {
       if (i%(scaleSize/res)==0) { 
         z++;
