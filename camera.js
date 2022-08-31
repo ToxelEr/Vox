@@ -1,4 +1,4 @@
-//camera
+//orbit camera
 let [Yaw,Pitch,XAcc,YAcc] = [-25,25,-.075,.05];
 let [YawV,PitchV,XOld,YOld] = [0,0,0,0];
 let start = true;
