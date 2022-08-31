@@ -24,23 +24,24 @@ function rotation(x1,y1,x,y,angle) {
   return [nx, ny];
 }
 
+function sspr(x,y,w,h,x1,y1,w1,h1) {
+  img = document.querySelector('.sprite');
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img,x1,y1,w1,h1,x,y,w,h);
+}
+
+function ssprf(ctx) {
+  img = document.querySelector('.sprite');
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img,0,0,img.width,img.height,0,0,img.width,img.height);
+}
+
 function ssprr(x,y,w,h,x1,y1,w1,h1,r,angle) {
     ctx.save();
   img = document.querySelector('.sprite');
   ctx.imageSmoothingEnabled = false;
   ctx.translate(x+w/2,y+h/2);
   ctx.scale(1,Math.sin(angle*(Math.PI/180)))
-  ctx.rotate(r * (Math.PI/180));
-  ctx.translate(-x-w/2,-y-h/2);
-  ctx.drawImage(img,x1,y1,w1,h1,x,y,w,h);
-  ctx.restore();
-}
-
-function ssprr2(x,y,w,h,x1,y1,w1,h1,r) {
-  ctx.save();
-  img = document.querySelector('.sprite');
-  ctx.imageSmoothingEnabled = false;
-  ctx.translate(x+w/2,y+h/2);
   ctx.rotate(r * (Math.PI/180));
   ctx.translate(-x-w/2,-y-h/2);
   ctx.drawImage(img,x1,y1,w1,h1,x,y,w,h);
