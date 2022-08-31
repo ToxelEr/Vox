@@ -1,10 +1,10 @@
 //camera
-let [Yaw,Pitch,XAcc,YAcc] = [-155,-25,.075,-.05];
+let [Yaw,Pitch,XAcc,YAcc] = [-25,25,-.075,.05];
 let [YawV,PitchV,XOld,YOld] = [0,0,0,0];
 let start = true;
 let start2 = false;
 
-const el = document.body;
+const el = document.querySelector('#canvas');
 el.addEventListener('touchstart', touchStart);
 el.addEventListener('touchmove',touchMove);
 el.addEventListener('mousedown', mouseStart);
