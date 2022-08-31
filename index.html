@@ -60,11 +60,9 @@
 </div>
 <script src="vox.js"></script>
 <script src="camera.js"></script>
-
 <script>
-
   
-  scaleSize = 32;
+  scaleSize = 16;
   resolution = 8;
   res = scaleSize/resolution;
   image = document.querySelector('.sprite');
@@ -89,7 +87,7 @@
     YawV = YawV * .9;
     PitchV = PitchV * .9;
     
-    if (Pitch < 0) {
+    if (Pitch > 0) {
       ctx.globalCompositeOperation = 'source-over';
     }
     else {
