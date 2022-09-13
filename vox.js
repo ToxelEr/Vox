@@ -9,7 +9,7 @@ function sprite(spr) {
   img.classList.add('sprite');
 }
 
-function cls(x) {
+function cls(ctx,x) {
    ctx.clearRect(0, 0, canvas.width, canvas.height);
    canvas.style.background = x;
 }
@@ -24,19 +24,19 @@ function rotation(x1,y1,x,y,angle) {
   return [nx, ny];
 }
 
-function sspr(x,y,w,h,x1,y1,w1,h1) {
+function sspr(ctx,x,y,w,h,x1,y1,w1,h1) {
   img = document.querySelector('.sprite');
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(img,x1,y1,w1,h1,x,y,w,h);
 }
 
-function ssprf(ctx) {
+function ssprf(ctx,s) {
   img = document.querySelector('.sprite');
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(img,0,0,img.width,img.height,0,0,img.width,img.height);
+  ctx.drawImage(img,0,0,img.width*(s+1),img.height*(s+1),0,0,img.width*(s+1),img.height*(s+1));
 }
 
-function ssprr(x,y,w,h,x1,y1,w1,h1,r,angle) {
+function ssprr(ctx,x,y,w,h,x1,y1,w1,h1,r,angle) {
     ctx.save();
   img = document.querySelector('.sprite');
   ctx.imageSmoothingEnabled = false;

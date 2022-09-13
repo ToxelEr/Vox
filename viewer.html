@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vox</title>
+</head>
+
+<body>
+<style>
+  * {
+    background: #d0d0e1;
+    padding: 0;
+    margin: 0;
+  }
+  
+  head {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  .screen {
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+    width: 100%;
+    height: 100%;
+  }
+  
+  #canvas {
+    touch-action: none;
+    image-rendering: pixelated;
+    position: absolute;
+    background: #000;
+  }
+
+  .tab {
+    position: absolute;
+    overflow: hidden;
+  }
+
+  @media (orientation: portrait) {
+    #canvas {
+      width: 100vw;
+      height: 100vw;
+    }
+    .tab {
+      width: 90vw;
+      height: calc(100% - 110vw);
+      margin: 5vw;
+      bottom: 0;
+      background: #e3e6ef;
+      border-radius: 2.5vw;
+    }
+    .sprite {
+      transform: rotateZ(90deg) translateX(-500%) translateY(-45%);
+    }
+  }
+  @media (orientation: landscape) {
+    #canvas {
+      width: 100vh;
+      height: 100vh;
+      right: 0;
+    }
+    .tab {
+      height: 90vh;
+      width: calc(100vw - 100vh);
+      margin: 5vh;
+      background: #e3e6ef;
+      border-radius: 2.5vh;
+      left: 0;
+    }
+  }
+</style>
+<div class="screen">
+  <canvas id="canvas"></canvas>
+  <div class="tab">
+    <input type="file" accept="image/*" onchange="load(this)"><hr>
+    resolution
+    <input type="range" value="4" min="1" max="6" class="res" onchange="update()"><hr>
+    stacks
+    <input type="range" value="8" min="1" max="8" class="stk" onchange="update()"><hr>
+    <img class="sprite" src="models/clown.png">
+  </div>
+</div>
+
+<script src="vox.js"></script>
+<script src="camera.js"></script>
+<script>
+  image = document.querySelector('.sprite');
+  resv = document.querySelector('.res');
+  stkv = document.querySelector('.stk');
+  updated = true;
+  init();
+
+  function load(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        image.src = e.target.result;
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function update() {
+    updated = false;
+    init();
+  }
+
+  image.onload = function(){updated=false;init();};
+
+  function init() {
+    width = image.width;
+    height = image.height;
+    //resolution of screen
+    scaleSize = 16/(width/Math.pow(2,resv.value));
+    //number of stacks
+    resolution = stkv.value;
+    res = scaleSize/resolution;
+    layers = height/width;
+    size = layers*scaleSize;
+    canvas.width = size;
+    canvas.height = size;
+    layers2 = layers*scaleSize/res;
+    is = scaleSize/(scaleSize/res*2);
+    x = size/2-size/4;
+    y = x;
+    scale = size/2;
+    t = 0;
+    draw();
+  }
+
+  function draw() {
+    if (updated == true) {
+      requestAnimationFrame(draw);
+    }
+    else {
+      cancelAnimationFrame(draw);
+    }
+
+    Yaw = Yaw + YawV;
+    Pitch = Math.min(Math.max(Pitch + PitchV,-90),90);
+    YawV = YawV * .9;
+    PitchV = PitchV * .9;
+
+    //sorting stacks
+    if (Pitch > 0) {
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    else {
+      ctx.globalCompositeOperation = 'destination-over';
+    }
+
+    t = t+1;
+
+    //updating screen
+    cls(ctx);
+
+    z = 0;
+
+    rotx = Pitch;
+    roty = Yaw;
+
+    for (i = layers2; i > 0; i--) {
+      if (i%(scaleSize/res)==0) { 
+        z++;
+      }
+      ssprr(ctx,x,y+(i*is-layers2*is/2)*Math.cos(rotx*Math.PI/180),scale,scale,0,z*-width+height,width,width,roty,rotx);
+    }
+    updated = true;
+  }
+
+</script>
+
+</body>
+
+</html>
